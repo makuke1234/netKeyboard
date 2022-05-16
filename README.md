@@ -14,7 +14,7 @@ can connect to it via another computer across the home network. Currently only M
 
 ## Obtaining
 
-Currently, no releases yet due to active development.
+32-bit (x86) & 64-bit (x64) Windows binaries can be obtained [here](https://github.com/makuke1234/femto/releases).
 
 
 # Usage
