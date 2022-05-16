@@ -1,4 +1,5 @@
 #include "udp.h"
+#include "input.h"
 
 #include <assert.h>
 
@@ -129,7 +130,31 @@ static inline DWORD WINAPI s_udpThread_readKbdOut_thread(LPVOID lpParams)
 			if (numBytes > 0)
 			{
 				// Set received packet size before setting the flag
-				fwrite(uThread->buffer, (size_t)numBytes, 1, uThread->fout);
+				//fwrite(uThread->buffer, (size_t)numBytes, 1, uThread->fout);
+				const INPUT_RECORD * records = uThread->buffer;
+				const size_t numRecords = (size_t)numBytes / sizeof(INPUT_RECORD);
+				INPUT inputs[MAX_RECORD] = { 0 };
+				size_t j = 0;
+				for (size_t i = 0; i < numRecords; ++i)
+				{
+					if (records[i].EventType != KEY_EVENT)
+					{
+						continue;
+					}
+					const KEY_EVENT_RECORD * ev = &records[i].Event.KeyEvent;
+					INPUT * ip = &inputs[j];
+					++j;
+
+					ip->type = INPUT_KEYBOARD;
+					ip->ki.wVk = ev->wVirtualKeyCode;
+					ip->ki.wScan = ev->wVirtualScanCode;
+					ip->ki.dwFlags = ((!ev->bKeyDown) ? KEYEVENTF_KEYUP : 0);
+				}
+
+				if (j > 0)
+				{
+					SendInput((UINT)j, inputs, sizeof(INPUT));
+				}
 			}
 		}
 	}

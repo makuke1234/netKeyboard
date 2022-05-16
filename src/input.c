@@ -28,7 +28,7 @@ void keyboardInputHandler(udp_t * restrict udp, char * restrict buffer, int bufl
 				INPUT_RECORD * event = &records[i];
 				if (event->EventType == KEY_EVENT)
 				{
-					KEY_EVENT_RECORD * kev = &event->Event.KeyEvent;
+					const KEY_EVENT_RECORD * kev = &event->Event.KeyEvent;
 
 					if ((GetAsyncKeyState(VK_CONTROL) & 0x8000) && ((GetAsyncKeyState(VK_LSHIFT) & 0x8000) || (GetAsyncKeyState(VK_RSHIFT) & 0x800)) &&
 						((GetAsyncKeyState(VK_LMENU) & 0x8000) || (GetAsyncKeyState(VK_RMENU) & 0x8000)) &&
@@ -60,6 +60,10 @@ void keyboardOutputHandler(struct udp * restrict udp)
 {
 	INPUT_RECORD records[MAX_RECORD];
 
+	char str[BUFLEN];
+	sprintf(str, "Connected!\n");
+	udp_write(udp, str, (int)strlen(str));
+
 	udpThread_t udpThread;
 	udpThread_init(udp, &udpThread);
 	if (!udpThread_readKbdOut(&udpThread, records, MAX_RECORD))
@@ -71,7 +75,7 @@ void keyboardOutputHandler(struct udp * restrict udp)
 	INPUT_RECORD inpRecords[MAX_RECORD];
 	HANDLE hStdIn = GetStdHandle(STD_INPUT_HANDLE);
 
-	printf("Ready to send data!\n");
+	printf("Ready to receive data!\n");
 
 	while (1)
 	{
@@ -82,10 +86,10 @@ void keyboardOutputHandler(struct udp * restrict udp)
 			bool breakFlag = false;
 			for (DWORD i = 0; i < nEvents; ++i)
 			{
-				INPUT_RECORD * event = &inpRecords[i];
+				const INPUT_RECORD * event = &inpRecords[i];
 				if (event->EventType == KEY_EVENT)
 				{
-					KEY_EVENT_RECORD * kev = &event->Event.KeyEvent;
+					const KEY_EVENT_RECORD * kev = &event->Event.KeyEvent;
 
 					if ((GetAsyncKeyState(VK_CONTROL) & 0x8000) && ((GetAsyncKeyState(VK_LSHIFT) & 0x8000) || (GetAsyncKeyState(VK_RSHIFT) & 0x800)) &&
 						((GetAsyncKeyState(VK_LMENU) & 0x8000) || (GetAsyncKeyState(VK_RMENU) & 0x8000)) &&

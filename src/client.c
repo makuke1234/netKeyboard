@@ -23,6 +23,11 @@ bool udpClient_open(udpClient_t * restrict client, const char * restrict ipstr, 
 	{
 		address = inet_ntoa(**(struct in_addr **)(hostname->h_addr_list));
 	}
+
+	if (strcmp(address, "127.0.0.1") == 0)
+	{
+		return false;
+	}
 	client->u.si_other.sin_addr.s_addr = inet_addr(address);
 
 	if (connect(client->u.s, (struct sockaddr *)&client->u.si_other, sizeof client->u.si_other))
