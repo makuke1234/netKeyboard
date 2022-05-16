@@ -1,1 +1,6 @@
+#include "../args.c"
+#include "../client.c"
+#include "../input.c"
 #include "../main.c"
+#include "../server.c"
+#include "../udp.c"
