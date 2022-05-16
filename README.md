@@ -7,7 +7,7 @@
 ![C version](https://img.shields.io/badge/version-C11-blue.svg)
 [![wakatime](https://wakatime.com/badge/github/makuke1234/netKeyboard.svg)](https://wakatime.com/badge/github/makuke1234/netKeyboard)
 
-Inspired by [netKeyboard](https://github.com/makuke1234/UDPterminal) and written in C, netKeyboard is designed to provide
+Inspired by [UDPterminal](https://github.com/makuke1234/UDPterminal) and written in C, netKeyboard is designed to provide
 seamless experience when using the same keyboard to control multiple computers. Just start one instance as a keyboard server and you
 can connect to it via another computer across the home network. Currently only M$ Windows support is planned.
 
